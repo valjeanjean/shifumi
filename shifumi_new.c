@@ -5,9 +5,9 @@
 #include <unistd.h>
 #include <time.h>
 
-#define PIERRE 1   // if p1ShiFuMi > p2shifumi && p1ShiFuMi > pierre printf("%s à gagné", p1shifumi); ?
+#define PIERRE 1   
 #define FEUILLE 2
-#define CISEAUX 3 /* METTRE DES DEFINE POUR LES UTILISES DANS LES IF AU LIEU DE VALEURES DURES lignes 196 - 207 */
+#define CISEAUX 3 
 #define QUIT 0
 #define MAX_LENGTH 255
 #define MULTIPLAYER 2
@@ -19,7 +19,7 @@ void game_start_display(){
     printf("---------------------- ShiFuMi ! --------------------\n\n");
 }
 
-/* JOUER CONTRE QUELQU'UN OU CONTRE LE PC */
+/* CHOIX DE JOUER CONTRE QUELQU'UN OU CONTRE LE PC */
 int ask_gameplay(){
 
     char user_gameplay_choice[MAX_LENGTH]; 
@@ -49,7 +49,7 @@ int ask_gameplay(){
 void ask_username_display(char *first_username, int taille){
     
     fgets(first_username, taille, stdin);
-    first_username[strcspn(first_username, "\n")] = 0; // Méthode pour enlever le \n avec strcspn
+    first_username[strcspn(first_username, "\n")] = 0;
     printf("Vous avez choisi le pseudo %s.\n", first_username);
 }
 
@@ -121,6 +121,7 @@ int verif_results(int atoiJ1, int atoiJ2){
     
 int main(){
     
+    /* DÉCLARATION DE TABLEAUX POUR LES PSEUDOS & STOCK DU COUP CHOISI */
     char player1_username[MAX_LENGTH], player2_username[MAX_LENGTH], p1_choice[MAX_LENGTH], p2_choice[MAX_LENGTH];
     char pc_username[MAX_LENGTH] = "PC";
     
@@ -129,16 +130,30 @@ int main(){
     
     /* Déclarations de variables pour le calcul d'atoi */
     int player1_move = -1, player2_move = -1, call_verif = -1;
-    
     int multi_or_pc = -1;
+
+    /* Aléatoire */
     srand(time(NULL));
     int random_value = (rand() % 3) + 1;
 
     game_start_display();
-
-    multi_or_pc = ask_gameplay();
     
-    while(multi_or_pc != PC && multi_or_pc != MULTIPLAYER){
+
+    do{
+
+        multi_or_pc = ask_gameplay();
+        
+        if(multi_or_pc == 1 || multi_or_pc == 2){
+            
+            break;
+        }
+
+         printf("Non reconnu\n");
+
+    }while(multi_or_pc != PC && multi_or_pc != MULTIPLAYER);
+        
+    
+    /*while(multi_or_pc != PC && multi_or_pc != MULTIPLAYER){
 
         printf("Non reconnu\n");
         multi_or_pc = ask_gameplay();
@@ -148,14 +163,20 @@ int main(){
 
             break;
         }
-    }
+    }*/
 
-    while(multi_or_pc == MULTIPLAYER){ 
-    
+    if(multi_or_pc == MULTIPLAYER){
+
         printf("Veuillez saisir le pseudonyme du premier joueur.\n");
         ask_username_display(player1_username, MAX_LENGTH); 
         printf("Veuillez saisir le pseudonyme du deuxième joueur.\n");
         ask_username_display(player2_username, MAX_LENGTH);
+
+
+    }
+
+    while(multi_or_pc == MULTIPLAYER){ 
+    
 
         player_choice_display(player1_username, p1_choice, sizeof(p1_choice));
 
@@ -164,8 +185,6 @@ int main(){
                                     /* Boucle de vérification entrée utilisateur joueur 1 */
         /*---------------------------------------------------------------------------------------------------------------*/
         while(player1_move != PIERRE && player1_move != FEUILLE & player1_move != CISEAUX && player1_move != QUIT){
-        // remplacer player1_move par nom du paramètre (player_move), fgets player_choice, sizeof(player_choice);
-        // player_move = atoi(player_choice?)
 
             printf("Non reconnu. Saisissez 1 pour la pierre, 2 pour la feuille, 3 pour ciseaux :\n\n");
             fgets(p1_choice, sizeof(p1_choice), stdin);
@@ -369,7 +388,7 @@ int main(){
 
     }
 
-        FILE *fichier_end = fopen("score_file", "w+");
+        FILE *fichier_end = fopen("score_file", "w");
         
         // Actualisation des scores dans le fichier score_file
         fprintf(fichier_end, "%d %d", player_ScorevsPC, pc_scoreVSplayer); 
