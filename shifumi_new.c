@@ -150,6 +150,16 @@ int main(){
         }
     }
 
+    if(multi_or_pc == MULTIPLAYER){
+
+        printf("Veuillez saisir le pseudonyme du premier joueur.\n");
+        ask_username_display(player1_username, MAX_LENGTH); 
+        printf("Veuillez saisir le pseudonyme du deuxième joueur.\n");
+        ask_username_display(player2_username, MAX_LENGTH);
+
+
+    }
+
     while(multi_or_pc == MULTIPLAYER){ 
     
         printf("Veuillez saisir le pseudonyme du premier joueur.\n");
